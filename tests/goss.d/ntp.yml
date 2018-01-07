@@ -16,11 +16,7 @@ port:
       consist-of:
         - "127.0.0.1"
 
-  'udp6:123':
-    listening: true
-    ip:
-      consist-of:
-        - "::1"
+    # NOTE: IPv6 isn't normally supported in Docker so we skip testing for that
 
 file:
   '/etc/ntp.conf':
