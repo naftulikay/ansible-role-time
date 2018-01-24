@@ -3,7 +3,6 @@
 *.pyo
 __pycache__
 
-/.ansible
-
 # vagrant
+/.ansible
 /.vagrant
