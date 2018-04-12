@@ -10,7 +10,7 @@
 - name: build
   hosts: localhost
   roles:
-    - role: time
+    - role: default
 
 - name: test
   hosts: localhost
@@ -19,9 +19,9 @@
       {{ ansible_distribution|lower == "ubuntu" and ansible_distribution_release|lower == "xenial" }}
     ntp_package: ntp
     time_service: |-
-      {% if ansible_distribution_release|lower == "xenial" -%}
+      {% if is_ubuntu_xenial_derivative -%}
         timesyncd
-      {%- elif ansible_distribution_release|lower == "trusty" -%}
+      {%- elif is_ubuntu_trusty_derivative -%}
         ntp
       {%- else -%}
         ntpd
