@@ -1,27 +1,17 @@
 ---
 # load variables per os and release
 - name: load ubuntu variables
-  include_vars: ubuntu/common.yml
+  include_vars: ubuntu.yml
   when: is_ubuntu_derivative
 
-- name: load trusty variables
-  include_vars: ubuntu/trusty.yml
-  when: is_ubuntu_trusty_derivative
-
-- name: load xenial variables
-  include_vars: ubuntu/xenial.yml
-  when: is_ubuntu_xenial_derivative
-
 - name: load redhat variables
-  include_vars: "{{ var_loop_item }}"
-  with_items:
-    - redhat/common.yml
-    - redhat/rhel7.yml
-  loop_control: { loop_var: var_loop_item }
+  include_vars: redhat.yml
   when: is_redhat_derivative
 
-- name: include systemd facts
-  include_tasks: discover/systemd.yml
+- name: establish whether systemd
+  set_fact:
+    systemd: |-
+      {{ ansible_service_mgr == "systemd" }}
 
 - name: include sync daemon facts
   include_tasks: discover/sync-daemon.yml
@@ -41,11 +31,11 @@
 # configure the time sync daemon
 - name: configure ntp
   include_tasks: ntp/configure.yml
-  when: timesyncd|bool == false
+  when: not timesyncd
 
 - name: configure timesyncd
   include_tasks: timesyncd/configure.yml
-  when: timesyncd|bool
+  when: timesyncd
 
 # enable and start the service
 - name: start time sync service

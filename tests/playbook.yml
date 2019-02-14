@@ -1,39 +1,25 @@
 ---
-- name: setup
-  hosts: localhost
-  vars:
-    container_user: vagrant
-  tasks:
-    - name: create user
-      user: name={{ container_user }} comment="Container User" state=present
-
 - name: build
-  hosts: localhost
+  hosts: all
   roles:
     - role: default
 
 - name: test
-  hosts: localhost
-  vars:
-    is_ntp: |-
-      {{ ansible_distribution|lower == "ubuntu" and ansible_distribution_release|lower == "xenial" }}
-    ntp_package: ntp
-    time_service: |-
-      {% if is_ubuntu_xenial_derivative -%}
-        timesyncd
-      {%- elif is_ubuntu_trusty_derivative -%}
-        ntp
-      {%- else -%}
-        ntpd
-      {%- endif -%}
+  hosts: all
   roles:
-    - role: degoss
-      degoss_debug: true
-      degoss_clean: false
+    - role: naftulikay.degoss
       goss_file: goss.yml
       goss_addtl_dirs: [goss.d]
-      goss_env_vars:
-        is_ntp: "{{ is_ntp }}"
-        ntp_package: "{{ ntp_package }}"
-        time_service: "{{ time_service }}"
+      goss_variables:
+        # trusty and centos7 use ntp
+        is_ntp: "{{ not is_ubuntu_xenial_derivative }}"
+        ntp_package: ntp
+        time_service: |-
+          {% if is_ubuntu_derivative -%}
+            ntp
+          {%- elif is_ubuntu_xenial_derivative -%}
+            timesyncd
+          {%- else -%}
+            ntpd
+          {%- endif -%}
         time_server_pool_name: "{{ ansible_distribution|lower }}"

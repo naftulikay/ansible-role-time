@@ -4,7 +4,7 @@
   changed_when: false
   failed_when: false
   register: timesyncd_result
-  when: systemd|bool
+  when: systemd
   become: true
 
 - name: detect whether to use timesyncd
