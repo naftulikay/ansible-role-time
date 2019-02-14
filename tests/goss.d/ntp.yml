@@ -1,10 +1,10 @@
 ---
 package:
-  {{.Env.ntp_package}}:
+  {{.Vars.ntp_package}}:
     installed: true
 
 service:
-  {{ .Env.time_service }}:
+  {{ .Vars.time_service }}:
     enabled: true
     running: true
 
@@ -27,10 +27,10 @@ file:
       - /^restrict 127\.0\.0\.1$/
       - /^restrict \:\:1$/
       # preferred ones
-      - /^server 0\.{{.Env.time_server_pool_name}}\.pool\.ntp\.org iburst prefer$/
-      - /^server 1\.{{.Env.time_server_pool_name}}\.pool\.ntp\.org iburst prefer$/
-      - /^server 2\.{{.Env.time_server_pool_name}}\.pool\.ntp\.org iburst prefer$/
-      - /^server 3\.{{.Env.time_server_pool_name}}\.pool\.ntp\.org iburst prefer$/
+      - /^server 0\.{{.Vars.time_server_pool_name}}\.pool\.ntp\.org iburst prefer$/
+      - /^server 1\.{{.Vars.time_server_pool_name}}\.pool\.ntp\.org iburst prefer$/
+      - /^server 2\.{{.Vars.time_server_pool_name}}\.pool\.ntp\.org iburst prefer$/
+      - /^server 3\.{{.Vars.time_server_pool_name}}\.pool\.ntp\.org iburst prefer$/
       # fallback ones
       - /^server 0\.pool\.ntp\.org iburst$/
       - /^server 1\.pool\.ntp\.org iburst$/
