@@ -5,9 +5,11 @@
   failed_when: false
   register: timesyncd_result
   when: systemd|bool
+  become: true
 
 - name: detect whether to use timesyncd
-  set_fact: timesyncd="{{ (timesyncd_result is defined and timesyncd_result.get('rc') == 0) | bool }}"
+  set_fact:
+    timesyncd: "{{ (timesyncd_result is defined and timesyncd_result.get('rc') == 0) | bool }}"
 
 - name: detect time service
   set_fact:
