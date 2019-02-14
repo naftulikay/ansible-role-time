@@ -1,4 +1,9 @@
 ---
+- name: install dbus
+  package: name=dbus state=present
+  when: is_ubuntu_bionic_derivative
+  become: true
+
 - name: detect timesyncd
   shell: systemctl list-units | awk '{print $1;}' | grep -qP 'systemd-timesyncd'
   changed_when: false
