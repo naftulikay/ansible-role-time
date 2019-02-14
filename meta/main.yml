@@ -2,6 +2,7 @@
 galaxy_info:
   name: time
   author: Naftuli Kay
+  src: naftulikay.time
   description: Configure time synchronization on a machine.
 
   license: MIT
