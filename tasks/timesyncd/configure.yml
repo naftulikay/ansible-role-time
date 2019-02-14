@@ -8,3 +8,4 @@
     mode: 0644
   # unfortunately no validation program
   notify: restart timesyncd
+  become: true

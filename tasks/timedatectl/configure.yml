@@ -4,17 +4,21 @@
   shell: "timedatectl | grep -oP '(?<=RTC in local TZ: )(yes|no)'"
   register: local_rtc_output
   changed_when: false
+  become: true
 
 - name: disable local rtc
   command: timedatectl set-local-rtc false
   when: local_rtc_output.get('rc') == 0 and (local_rtc_output.stdout|trim) == "yes"
+  become: true
 
 # make sure that systemd takes advantage of network time
 - name: detect network time status
   shell: "timedatectl | grep -oP '(?<=NTP synchronized: )(yes|no)'"
   register: ntp_synchronized_output
   changed_when: false
+  become: true
 
 - name: enable network time
   command: timedatectl set-ntp true
   when: ntp_synchronized_output.get('rc') == 0 and (ntp_synchronized_output|trim) == "yes"
+  become: true
